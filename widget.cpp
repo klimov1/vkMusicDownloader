@@ -4,8 +4,8 @@
 #include "request.h"
 #include "audio.h"
 #include "config.h"
+#include "downloader.h"
 
-#include <QUrlQuery>
 #include <QStandardItemModel>
 
 namespace {
@@ -64,7 +64,11 @@ void Widget::initSongListView(const std::vector<audio::SongInfo>& songs)
     ui->songListView->setModel(model);
     ui->songListView->setViewMode( QListView::ListMode );
 
-    //connect(ui->songListView, SIGNAL(clicked(QModelIndex)), this,
+    connect(ui->songListView, &QListView::clicked, this,[songs](const QModelIndex &index)
+            {
+        auto& song = songs[index.row()];
+        Downloader::getInstance().addToQueue(song.title_,song.url_);
+    } );
 }
 
 void Widget::on_getAudiosBtn_clicked()

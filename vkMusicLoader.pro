@@ -21,14 +21,16 @@ SOURCES += main.cpp\
     request.cpp \
     authorization.cpp \
     audio.cpp \
-    utils.cpp
+    utils.cpp \
+    downloader.cpp
 
 HEADERS  += widget.h \
     config.h \
     request.h \
     authorization.h \
     audio.h \
-    utils.h
+    utils.h \
+    downloader.h
 
 FORMS    += widget.ui \
     mainview.ui

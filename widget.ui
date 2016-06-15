@@ -42,22 +42,19 @@
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="songCountEdit_">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>25</height>
-        </size>
+      <widget class="QLineEdit" name="songCountEdit">
+       <property name="text">
+        <string>50</string>
        </property>
        <property name="placeholderText">
-        <string>50</string>
+        <string/>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QTableView" name="tableView"/>
+    <widget class="QListView" name="songListView"/>
    </item>
   </layout>
  </widget>

@@ -14,7 +14,7 @@ QString toString(const T& in)
 
 // convert json to varian map
 // throws exception
-QVariantMap convertJson(const QByteArray& data);
+QVariantMap convertJsonResponse(const QByteArray& data);
 
 }
 

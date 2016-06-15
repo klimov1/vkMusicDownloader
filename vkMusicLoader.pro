@@ -32,3 +32,6 @@ HEADERS  += widget.h \
 
 FORMS    += widget.ui \
     mainview.ui
+
+RESOURCES += \
+    resources.qrc

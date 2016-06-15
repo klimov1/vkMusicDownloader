@@ -16,6 +16,12 @@ namespace Ui {
 class Widget;
 }
 
+namespace audio {
+
+struct SongInfo;
+
+}
+
 struct User
 {
     qlonglong id_;
@@ -34,26 +40,17 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
-signals:
-    void authSuccess();
-
-public slots:
-    void checkUrl(QUrl url);
-    void getFriends();
-
 private slots:
 
     void on_getAudiosBtn_clicked();
+    void songCountChanged(QString);
+
 
 private:
-    QByteArray GET(QUrl url);
-
-    void saveToken();
-    void readToken();
+    void initSongListView( const std::vector<audio::SongInfo>& songs );
 
 private:
     Ui::Widget *ui;
-    QString token_;
     int songCount_ = 50;
 };
 

@@ -54,7 +54,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableView" name="tableView"/>
+    <widget class="QListView" name="songListView"/>
    </item>
   </layout>
  </widget>

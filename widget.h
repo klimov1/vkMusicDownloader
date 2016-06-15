@@ -16,6 +16,12 @@ namespace Ui {
 class Widget;
 }
 
+namespace audio {
+
+struct SongInfo;
+
+}
+
 struct User
 {
     qlonglong id_;
@@ -38,6 +44,9 @@ private slots:
 
     void on_getAudiosBtn_clicked();
     void songCountChanged(QString);
+
+private:
+    void initSongListView( const std::vector<audio::SongInfo>& songs );
 
 private:
     Ui::Widget *ui;

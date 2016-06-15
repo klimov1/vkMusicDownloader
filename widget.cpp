@@ -6,14 +6,24 @@
 #include "config.h"
 
 #include <QUrlQuery>
-#include <QJsonObject>
-#include <QJsonDocument>
-#include <QJsonArray>
-#include <QVector>
-#include <QFile>
+#include <QStandardItemModel>
 
+namespace {
 
-const QString CONFIG_FILE = "config.txt";
+class NonEditableModel : public QStandardItemModel
+{
+
+    Qt::ItemFlags flags(const QModelIndex &/*index*/) const override
+    {
+        return Qt::ItemIsSelectable | Qt::ItemIsEnabled ;
+    }
+public:
+    NonEditableModel(int rowCount, Widget* parent) : QStandardItemModel(rowCount, 1, parent)
+    {}
+
+};
+
+} // anonymous
 
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
@@ -36,11 +46,28 @@ void Widget::songCountChanged(QString text)
     songCount_ = text.toInt();
 }
 
-void Widget::on_getAudiosBtn_clicked()
+void Widget::initSongListView(const std::vector<audio::SongInfo>& songs)
 {
-    auto songsList = audio::getSongs(Config::getInstance().getUserId(), static_cast<std::size_t>(songCount_));
-    for ( auto& it : songsList )
-        qDebug() << it.artist_ << " - " << it.title_ << " : " << it.duration_;
+    int rowCount = static_cast<int>(songs.size());
+    auto* model = new NonEditableModel(rowCount, this);
+    for (int row = 0; row < rowCount; ++row)
+    {
+        QModelIndex nameIndex = model->index(row,0);
+        QString songName = songs[row].artist_ + " - "+ songs[row].title_;
+        nameIndex.flags();
+
+        model->setData(nameIndex, songName, Qt::DisplayRole);
+        model->setData(nameIndex, songName, Qt::ToolTipRole);
+        model->setData(nameIndex, QIcon(":/images/download.jpg"), Qt::DecorationRole);
+    }
+
+    ui->songListView->setModel(model);
+    ui->songListView->setViewMode( QListView::ListMode );
+
+    //connect(ui->songListView, SLOT(selectionChanged(QItemSelection,QItemSelection)),this,
 }
 
-
+void Widget::on_getAudiosBtn_clicked()
+{
+    initSongListView(audio::getSongs(Config::getInstance().getUserId(), static_cast<std::size_t>(songCount_)));
+}

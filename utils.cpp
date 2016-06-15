@@ -9,17 +9,15 @@
 #include <QMessageBox>
 namespace utils {
 
-QVariantMap convertJson(const QByteArray &data)
-{
-    QMessageBox::critical(nullptr,"time to debug","debug");
+QVariantMap convertJsonResponse(const QByteArray &data)
+{    
     QJsonParseError error;
     auto jsdoc = QJsonDocument::fromJson(data,&error);
     if ( error.error != QJsonParseError::NoError )
         qDebug() << "parse failed : " << error.errorString();
 
-    auto jsResponse = jsdoc.object()["response"].toObject();
-    qDebug() << jsResponse;
-    return jsResponse.toVariantMap();
+    //auto jsResponse = jsdoc.object()["response"].toObject();
+    return jsdoc.object()["response"].toObject().toVariantMap();
 }
 
 }

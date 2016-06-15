@@ -34,26 +34,13 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
-signals:
-    void authSuccess();
-
-public slots:
-    void checkUrl(QUrl url);
-    void getFriends();
-
 private slots:
 
     void on_getAudiosBtn_clicked();
-
-private:
-    QByteArray GET(QUrl url);
-
-    void saveToken();
-    void readToken();
+    void songCountChanged(QString);
 
 private:
     Ui::Widget *ui;
-    QString token_;
     int songCount_ = 50;
 };
 

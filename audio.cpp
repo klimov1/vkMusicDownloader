@@ -12,7 +12,7 @@ std::vector<SongInfo> getSongs(qlonglong userId, std::size_t count)
 {
     auto url = request::create(request::urlAudioGet, { {"owner_id", utils::toString(userId)},
                                                        {"count", utils::toString(count)}} );
-    auto js = utils::convertJson( request::get(url) );
+    auto js = utils::convertJsonResponse( request::get(url) );
 
     std::vector<SongInfo> songs;
     songs.reserve( static_cast<std::size_t>( js["count"].toDouble() ) );
@@ -31,7 +31,6 @@ std::vector<SongInfo> getSongs(qlonglong userId, std::size_t count)
         song.url_ = it["url"].toString();
 
         songs.push_back(song);
-
     }
 
     return songs;

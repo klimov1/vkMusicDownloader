@@ -13,16 +13,8 @@ int main(int argc, char *argv[])
     if( author.needGui() )
         author.exec();
 
-    auto token = author.getToken();
-    if (token.isEmpty())
+    if (!author.hasToken())
         return -1;
-
-/*    auto songsList = audio::getAllSongs(Config::getInstance().getUserId());
-
-    for ( auto& it : songsList )
-        qDebug() << it.artist_ << " - " << it.title_ << " : " << it.duration_;
-
-    return 0;*/
 
     Widget w;
     w.show();

@@ -6,12 +6,6 @@
 #include <config.h>
 #include <request.h>
 
-namespace
-{
-    QString ACCESS_TOKEN = "access_token";
-}
-
-
 Authorization::Authorization(QDialog *parent) : QDialog(parent)
 {
     readToken();
@@ -24,9 +18,6 @@ Authorization::Authorization(QDialog *parent) : QDialog(parent)
     setLayout(layout);
 
     setWindowTitle("Authorization");
-
-    //view->setMinimumSize(150,200);
-    //setMinimumSize(150,200);
 
     connect( view, SIGNAL(urlChanged(QUrl)), this, SLOT(urlChanged(QUrl)) );
 
@@ -42,6 +33,7 @@ void Authorization::urlChanged(const QUrl& url1)
     if ( !token.isEmpty() )
     {
         Config::getInstance().setToken(token);
+        token_ = token;
         Config::getInstance().setUserId(query.queryItemValue("user_id").toLongLong());
         close();
     }
@@ -56,10 +48,14 @@ void Authorization::readToken()
 
     auto request = request::create(request::urlFriendsGet,
                    { {"v","5.8"},
-                     {"fields","first_name,last_name"},
-                     {"access_token", token} } );
+                     {"fields","first_name,last_name"} } );
     auto answer = request::get(request);
 
     if ( !answer.isEmpty() && answer.toStdString().find("error_code") == std::string::npos )
+    {
         token_= token;
+        return;
+    }
+
+    config.setToken("");
 }

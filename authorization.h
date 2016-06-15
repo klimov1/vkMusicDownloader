@@ -13,6 +13,7 @@ public:
 
     QString getToken()const { return token_; }
     bool needGui()const { return token_.isEmpty(); }
+    bool hasToken()const { return !token_.isEmpty(); }
 
 public slots:
     void urlChanged(const QUrl& url);

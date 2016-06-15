@@ -64,7 +64,7 @@ void Widget::initSongListView(const std::vector<audio::SongInfo>& songs)
     ui->songListView->setModel(model);
     ui->songListView->setViewMode( QListView::ListMode );
 
-    //connect(ui->songListView, SLOT(selectionChanged(QItemSelection,QItemSelection)),this,
+    connect(ui->songListView, SIGNAL(clicked(QModelIndex)), this,
 }
 
 void Widget::on_getAudiosBtn_clicked()

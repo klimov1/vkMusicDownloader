@@ -45,6 +45,7 @@ private slots:
     void on_getAudiosBtn_clicked();
     void songCountChanged(QString);
 
+
 private:
     void initSongListView( const std::vector<audio::SongInfo>& songs );
 

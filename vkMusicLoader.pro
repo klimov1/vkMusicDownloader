@@ -22,7 +22,9 @@ SOURCES += main.cpp\
     authorization.cpp \
     audio.cpp \
     utils.cpp \
-    downloader.cpp
+    downloader.cpp \
+    downloadmanager.cpp \
+    downloaderui.cpp
 
 HEADERS  += widget.h \
     config.h \
@@ -30,7 +32,9 @@ HEADERS  += widget.h \
     authorization.h \
     audio.h \
     utils.h \
-    downloader.h
+    downloader.h \
+    downloadmanager.h \
+    downloaderui.h
 
 FORMS    += widget.ui \
     mainview.ui

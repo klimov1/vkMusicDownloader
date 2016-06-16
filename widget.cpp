@@ -4,7 +4,7 @@
 #include "request.h"
 #include "audio.h"
 #include "config.h"
-#include "downloader.h"
+#include "downloadmanager.h"
 
 #include <QStandardItemModel>
 
@@ -67,7 +67,7 @@ void Widget::initSongListView(const std::vector<audio::SongInfo>& songs)
     connect(ui->songListView, &QListView::clicked, this,[songs](const QModelIndex &index)
             {
         auto& song = songs[index.row()];
-        Downloader::getInstance().addToQueue(song.title_,song.url_);
+        DownloadManager::getInstance().addToQueue(song.title_+".mp3",song.url_);
     } );
 }
 

@@ -21,4 +21,3 @@ QVariantMap convertJsonResponse(const QByteArray &data)
 }
 
 }
-

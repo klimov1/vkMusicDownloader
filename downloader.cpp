@@ -1,55 +1,31 @@
 #include "downloader.h"
 
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
 
-class Downloader::DownloaderGui : public QObject
+Downloader::Downloader() : QObject(nullptr)
 {
-    Q_OBJECT
-
-public:
-    DownloaderGui() : QObject(nullptr)
-    {
-        accessMgr_ = new QNetworkAccessManager(this);
-        connect(accessMgr_, SIGNAL(finished(QNetworkReply*)), this, SLOT(finishedLoad(QNetworkReply*)));
-    }
-
-    void download(const QUrl& url)
-    {
-        QNetworkRequest request(url);
-        QNetworkReply* reply = accessMgr_->get(request);
-        //connect(reply, )
-    }
-
-signals:
-    //void downloadProgress()
-
-private slots:
-    void finishedLoad(QNetworkReply* reply)
-    {
-
-    }
-
-private:
-    QNetworkAccessManager* accessMgr_;
-};
-
-Downloader::Downloader() : gui_(new DownloaderGui())
-{
+    accessMgr_ = new QNetworkAccessManager(this);
+    connect(accessMgr_, SIGNAL(finished(QNetworkReply*)), this, SLOT(finishedLoad(QNetworkReply*)));
 }
 
 Downloader::~Downloader()
-{}
-
-Downloader &Downloader::getInstance()
 {
-    static Downloader loader;
-    return loader;
+    qDebug() << "Destroyed " << this;
 }
 
-void Downloader::addToQueue(const QString &saveToFile, const QUrl &url)
+void Downloader::download(const QUrl &url)
 {
+    QNetworkRequest request(url);
+    QNetworkReply* reply = accessMgr_->get(request);
 
+    connect(reply, SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(progress(qint64,qint64)));
 }
 
+void Downloader::finishedLoad(QNetworkReply *reply)
+{
+    if ( reply->error() != QNetworkReply::NoError )
+        emit error();
+    else
+        emit done(reply->url(), reply->readAll());
+
+    reply->deleteLater();
+}

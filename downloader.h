@@ -1,24 +1,33 @@
 #ifndef DOWNLOADER_H
 #define DOWNLOADER_H
 
-#include <QString>
-#include <QUrl>
-#include <memory>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
-class Downloader
+// obviously we don't need this low level class in .h file.
+// normaly I would hide it in .c file or as pimpl.
+// unfortunately Qt wants all QObject classes in .h file
+class Downloader : public QObject
 {
-    Downloader();  
+    Q_OBJECT
 public:
-    Downloader(const Downloader&) = delete;
-    Downloader(Downloader&&) = delete;
+    Downloader();
     ~Downloader();
 
-    static Downloader& getInstance();
-    void addToQueue( const QString& saveToFile, const QUrl& url);
+    void download(const QUrl& url);
+
+signals:
+    // if someone interested in progress
+    void progress( qint64 bytesReceived, qint64 bytesTotal );
+    void done( const QUrl& url, const QByteArray& data );
+    void error();
+
+private slots:
+    void finishedLoad(QNetworkReply* reply);
 
 private:
-    class DownloaderGui;
-    std::unique_ptr<DownloaderGui> gui_;
+    QNetworkAccessManager* accessMgr_;
 };
 
 #endif // DOWNLOADER_H

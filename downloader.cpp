@@ -1,7 +1,7 @@
 #include "downloader.h"
 
 
-Downloader::Downloader() : QObject(nullptr)
+Downloader::Downloader(QObject *parent) : QObject(parent)
 {
     accessMgr_ = new QNetworkAccessManager(this);
     connect(accessMgr_, SIGNAL(finished(QNetworkReply*)), this, SLOT(finishedLoad(QNetworkReply*)));
@@ -18,6 +18,8 @@ void Downloader::download(const QUrl &url)
     QNetworkReply* reply = accessMgr_->get(request);
 
     connect(reply, SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(progress(qint64,qint64)));
+    connect(this, SIGNAL(destroyed(QObject*)), reply, SLOT(deleteLater()));
+
 }
 
 void Downloader::finishedLoad(QNetworkReply *reply)
@@ -25,7 +27,7 @@ void Downloader::finishedLoad(QNetworkReply *reply)
     if ( reply->error() != QNetworkReply::NoError )
         emit error();
     else
-        emit done(reply->url(), reply->readAll());
+        emit done(reply->readAll());
 
     reply->deleteLater();
 }

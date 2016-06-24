@@ -3,9 +3,13 @@
 
 #include <QString>
 #include <QUrl>
-#include <memory>
+#include <QWidget>
+#include <QVBoxLayout>
 
-class DownloadManager
+//
+// Basically it's a holder of all dowload widgets
+//
+class DownloadManager : public QWidget
 {
     DownloadManager();
 public:
@@ -14,11 +18,16 @@ public:
     ~DownloadManager();
 
     static DownloadManager& getInstance();
-    void addToQueue( const QString& saveToFile, const QUrl& url);
 
-/*private:
-    class DownloadManagerGui;
-    std::unique_ptr<DownloadManagerGui> gui_;*/
+    // load asynchronously
+    void addToQueue(const QString& saveToFile, const QUrl& url);
+
+private:
+    QVBoxLayout* mainLayout_ = nullptr;
+
+private:
+    // need it to get the only one window with progressbars. see getInstance
+    static DownloadManager* instance_s;
 };
 
 #endif // DOWNLOADMANAGER_H

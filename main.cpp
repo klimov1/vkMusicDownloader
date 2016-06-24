@@ -1,23 +1,26 @@
-#include "widget.h"
 #include <QApplication>
 
 #include "authorization.h"
 #include "audio.h"
 #include "config.h"
 
+#include "mainview.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    Authorization author;
-    if( author.needGui() )
-        author.exec();
+    // authorization first
+    Authorization authorizationGui;
+    if( !authorizationGui.hasValidToken() )
+        authorizationGui.exec();
 
-    if (!author.hasToken())
+    // did we get a valid token?
+    if (!authorizationGui.hasValidToken())
         return -1;
 
-    Widget w;
-    w.show();
+    MainView view;
+    view.show();
 
     return a.exec();
 }

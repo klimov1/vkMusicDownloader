@@ -16,7 +16,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        widget.cpp \
     config.cpp \
     request.cpp \
     authorization.cpp \
@@ -24,9 +23,10 @@ SOURCES += main.cpp\
     utils.cpp \
     downloader.cpp \
     downloadmanager.cpp \
-    downloaderui.cpp
+    downloaderui.cpp \
+    mainview.cpp
 
-HEADERS  += widget.h \
+HEADERS  += \
     config.h \
     request.h \
     authorization.h \
@@ -34,10 +34,10 @@ HEADERS  += widget.h \
     utils.h \
     downloader.h \
     downloadmanager.h \
-    downloaderui.h
+    downloaderui.h \
+    mainview.h
 
-FORMS    += widget.ui \
-    mainview.ui
+FORMS    +=
 
 RESOURCES += \
     resources.qrc

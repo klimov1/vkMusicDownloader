@@ -12,22 +12,21 @@ class Downloader : public QObject
 {
     Q_OBJECT
 public:
-    Downloader();
+    Downloader(QObject* parent);
     ~Downloader();
 
     void download(const QUrl& url);
-
 signals:
-    // if someone interested in progress
+    // if someone interested in a progress
     void progress( qint64 bytesReceived, qint64 bytesTotal );
-    void done( const QUrl& url, const QByteArray& data );
+    void done(const QByteArray& data );
     void error();
 
 private slots:
     void finishedLoad(QNetworkReply* reply);
 
 private:
-    QNetworkAccessManager* accessMgr_;
+    QNetworkAccessManager* accessMgr_ = nullptr;
 };
 
 #endif // DOWNLOADER_H

@@ -4,6 +4,9 @@
 #include <QString>
 #include <QVariantMap>
 
+//
+// holds all configs that we need
+//
 class Config
 {
 public:
@@ -23,6 +26,7 @@ private:
     Config();
 
 private:
+    // settings holder
     QVariantMap settings_;
 };
 

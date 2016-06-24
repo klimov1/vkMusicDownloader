@@ -5,25 +5,24 @@
 #include <QString>
 #include <QUrl>
 
+//
+// authorization form.
+// reads and writes to Config instance
+//
 class Authorization : public QDialog
 {
     Q_OBJECT
 public:
     explicit Authorization(QDialog *parent = 0);
 
-    QString getToken()const { return token_; }
-    bool needGui()const { return token_.isEmpty(); }
-    bool hasToken()const { return !token_.isEmpty(); }
+    // do we have a valid token to continue?
+    bool hasValidToken()const;
 
-public slots:
+private slots:
     void urlChanged(const QUrl& url);
 
 private:
     void readToken();
-
-private:
-    QString token_;
-    qint64 userId_;
 };
 
 #endif // AUTHORIZATION_H

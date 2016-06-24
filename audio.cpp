@@ -4,15 +4,24 @@
 
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QErrorMessage>
 
-#include <QDebug>
 namespace audio {
 
 std::vector<SongInfo> getSongs(qlonglong userId, std::size_t count)
 {
     auto url = request::create(request::urlAudioGet, { {"owner_id", utils::toString(userId)},
                                                        {"count", utils::toString(count)}} );
-    auto js = utils::convertJsonResponse( request::get(url) );
+    QVariantMap js;
+    try
+    {
+        js = utils::convertJsonResponse( request::get(url) );
+    }
+    catch(const std::exception& ex)
+    {
+        QErrorMessage::qtHandler()->showMessage(ex.what(), "Error");
+        return {};
+    }    
 
     std::vector<SongInfo> songs;
     songs.reserve( static_cast<std::size_t>( js["count"].toDouble() ) );
